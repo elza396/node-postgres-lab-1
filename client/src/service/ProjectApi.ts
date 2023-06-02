@@ -1,3 +1,5 @@
+import {formDataToObject} from '../utils'
+
 export class ProjectApi {
     private readonly baseUrl: string
 
@@ -19,6 +21,17 @@ export class ProjectApi {
             body: JSON.stringify({
                 id
             })
+        })
+        return await response.json()
+    }
+
+    async createPerson(formData: FormData) {
+        const response = await fetch(this.getUrl('/'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formDataToObject(formData))
         })
         return await response.json()
     }

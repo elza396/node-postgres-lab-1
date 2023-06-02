@@ -14,12 +14,15 @@
     overflow: auto;
 }
 .contact {
+    width: 100%;
     background: #ece3e3;
     padding: 10px;
     display: flex;
     gap: 30px;
     border-radius: 5px;
     justify-content: space-between;
+    box-sizing: border-box;
+    align-items: center;
 }
 .buttons {
     display: flex;
@@ -36,4 +39,7 @@
 }
 .button:active {
     background: #979798;
+}
+.input {
+    width: 100px;
 }

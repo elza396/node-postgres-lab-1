@@ -1,6 +1,6 @@
 import express, {Express} from 'express'
 import dotenv from 'dotenv'
-import {deletePerson, getContacts, getPersons} from './responses'
+import {createPerson, deletePerson, getContacts, getPersons} from './responses'
 import bodyParser from 'body-parser'
 
 dotenv.config()
@@ -49,15 +49,15 @@ app.delete('/', (req, res) => {
         })
 })
 
-// app.post('/merchants', (req, res) => {
-//     merchant_model.createMerchant(req.body)
-//         .then(response => {
-//             res.status(200).send(response);
-//         })
-//         .catch(error => {
-//             res.status(500).send(error);
-//         })
-// })
+app.post('/', (req, res) => {
+    createPerson(req.body)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`)

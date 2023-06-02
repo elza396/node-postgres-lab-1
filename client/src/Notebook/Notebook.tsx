@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import s from './Notebook.module.css'
-import {IPersons} from '../models'
+import {IPerson} from '../../../common/models'
 import {projectApi} from '../index'
 
 export const Notebook = () => {
-    const [persons, setPersons] = useState<IPersons[]>([])
+    const [persons, setPersons] = useState<IPerson[]>([])
+    const [isAddPersonFormVisible, setIsAddPersonFormVisible] = useState<boolean>(false)
 
     const loadPersons = async () => {
         try {
@@ -28,6 +29,18 @@ export const Notebook = () => {
         }
     }
 
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        try {
+            const data = new FormData(e.target as HTMLFormElement)
+            await projectApi.createPerson(data)
+            await loadPersons()
+            setIsAddPersonFormVisible(false)
+        } catch (error) {
+            alert('Error create person')
+        }
+    }
+
     return (
         <div className={s.contacts}>
             <p>Моя записная книжечка</p>
@@ -35,7 +48,7 @@ export const Notebook = () => {
                 <div key={item.id} className={s.contact}>
                     <p>{item.name}</p>
                     <p>{item.surname}</p>
-                    <p>{new Date(item.birthday).toLocaleDateString()}</p>
+                    {item.birthday ? <p>{new Date(item.birthday).toLocaleDateString()}</p> : 'ㅤㅤㅤ-ㅤㅤㅤ'}
                     <div className={s.buttons}>
                         <button className={s.button}>...</button>
                         <button className={s.button} onClick={() => deleteHandler(item.id)}>
@@ -44,7 +57,18 @@ export const Notebook = () => {
                     </div>
                 </div>
             ))}
-            <button className={s.button}>Добавить контакт</button>
+            {isAddPersonFormVisible ? (
+                <form onSubmit={onSubmit} className={s.contact}>
+                    <input className={s.input} placeholder="Имя" type="text" name={'name'} />
+                    <input className={s.input} placeholder="Фамилия" type="text" name={'surname'} />
+                    <input className={s.input} placeholder="Дата рождения" type="date" name={'birthday'} />
+                    <button>Save</button>
+                </form>
+            ) : (
+                <button className={s.button} onClick={() => setIsAddPersonFormVisible(true)}>
+                    Новый контакт
+                </button>
+            )}
         </div>
     )
 }
