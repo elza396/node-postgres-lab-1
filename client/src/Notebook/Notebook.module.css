@@ -24,6 +24,9 @@
     box-sizing: border-box;
     align-items: center;
 }
+.contact p {
+    min-width: 60px;
+}
 .buttons {
     display: flex;
     align-items: center;

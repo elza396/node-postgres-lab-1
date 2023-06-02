@@ -59,7 +59,7 @@ export const Notebook = () => {
             ))}
             {isAddPersonFormVisible ? (
                 <form onSubmit={onSubmit} className={s.contact}>
-                    <input className={s.input} placeholder="Имя" type="text" name={'name'} />
+                    <input className={s.input} required placeholder="Имя" type="text" name={'name'} />
                     <input className={s.input} placeholder="Фамилия" type="text" name={'surname'} />
                     <input className={s.input} placeholder="Дата рождения" type="date" name={'birthday'} />
                     <button>Save</button>
