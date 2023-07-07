@@ -1,0 +1,40 @@
+.contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 20px 0 20px;
+    width: calc(100% - 40px);
+}
+.contact {
+    height: 50px;
+    background: #f5f1f1;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    border-radius: 5px;
+    justify-content: space-around;
+    box-sizing: border-box;
+    align-items: center;
+}
+.contact p {
+    min-width: 30px;
+}
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+}
+.button {
+    min-width: 40px;
+    border-radius: 5px;
+    border: 1px solid;
+    height: 30px;
+    background: #f6f6f6;
+}
+.button:active {
+    background: #979798;
+}
+.input {
+    width: 100px;
+}

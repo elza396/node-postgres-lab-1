@@ -1,4 +1,4 @@
-.contacts {
+.persons {
     height: 50%;
     width: 50%;
     min-width: fit-content;
@@ -13,7 +13,11 @@
     padding: 10px;
     overflow: auto;
 }
-.contact {
+.personWrapper {
+    transition: all 1s ease-in-out;
+    cursor: pointer;
+}
+.person {
     width: 100%;
     background: #ece3e3;
     padding: 10px;
@@ -24,7 +28,7 @@
     box-sizing: border-box;
     align-items: center;
 }
-.contact p {
+.person p {
     min-width: 60px;
 }
 .buttons {

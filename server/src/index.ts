@@ -1,6 +1,6 @@
 import express, {Express} from 'express'
 import dotenv from 'dotenv'
-import {createPerson, deletePerson, getContacts, getPersons} from './responses'
+import {createContact, createPerson, deletePerson, getContactsById, getPersons} from './responses'
 import bodyParser from 'body-parser'
 
 dotenv.config()
@@ -29,8 +29,17 @@ app.get('/', (req, res) => {
         })
 })
 
-app.get('/contacts', (req, res) => {
-    getContacts()
+app.post('/contacts', (req, res) => {
+    getContactsById(req.body.id)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+app.put('/contacts', (req, res) => {
+    createContact(req.body)
         .then(response => {
             res.status(200).send(response)
         })
