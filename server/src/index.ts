@@ -1,6 +1,16 @@
 import express, {Express} from 'express'
 import dotenv from 'dotenv'
-import {createContact, createPerson, deletePerson, getContactsById, getPersons} from './responses'
+import {
+    createContact,
+    createContactType,
+    createPerson,
+    deleteContact,
+    deleteContactType,
+    deletePerson,
+    getContactsById,
+    getContactTypes,
+    getPersons
+} from './responses'
 import bodyParser from 'body-parser'
 
 dotenv.config()
@@ -29,25 +39,6 @@ app.get('/', (req, res) => {
         })
 })
 
-app.post('/contacts', (req, res) => {
-    getContactsById(req.body.id)
-        .then(response => {
-            res.status(200).send(response)
-        })
-        .catch(error => {
-            res.status(500).send(error)
-        })
-})
-app.put('/contacts', (req, res) => {
-    createContact(req.body)
-        .then(response => {
-            res.status(200).send(response)
-        })
-        .catch(error => {
-            res.status(500).send(error)
-        })
-})
-
 app.delete('/', (req, res) => {
     deletePerson(req.body.id)
         .then(response => {
@@ -60,6 +51,65 @@ app.delete('/', (req, res) => {
 
 app.post('/', (req, res) => {
     createPerson(req.body)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
+app.post('/contacts', (req, res) => {
+    getContactsById(req.body.id)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+app.post('/contact', (req, res) => {
+    createContact(req.body)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
+app.delete('/contact', (req, res) => {
+    deleteContact(req.body.id)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
+app.get('/contactTypes', (req, res) => {
+    getContactTypes()
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
+app.delete('/contactType', (req, res) => {
+    deleteContactType(req.body.id)
+        .then(response => {
+            res.status(200).send(response)
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
+app.post('/contactType', (req, res) => {
+    createContactType(req.body)
         .then(response => {
             res.status(200).send(response)
         })

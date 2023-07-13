@@ -11,3 +11,8 @@ export interface IPerson {
     surname: number
     birthday: Date
 }
+export interface IContactType {
+    id: number
+    name: string
+    exists: boolean
+}

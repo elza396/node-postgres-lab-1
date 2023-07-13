@@ -27,6 +27,7 @@ export const Notebook = () => {
             await projectApi.deletePerson(id)
             await loadPersons()
         } catch (error) {
+            console.log(error)
             alert('Error delete person')
         }
     }
@@ -66,7 +67,7 @@ export const Notebook = () => {
                             </button>
                         </div>
                     </div>
-                    {visiblePersonId === item.id && <Contacts key={item.id} id={item.id} />}
+                    {visiblePersonId === item.id && <Contacts id={item.id} />}
                 </div>
             ))}
             {isAddPersonFormVisible ? (

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import s from './Contacts.module.css'
-import {IContact} from '../../../common/models'
 import {projectApi} from '../index'
+import {IContactType, IContact} from '../../../common/models'
+import {ContactTypesEditForm} from '../ContactTypesEditForm/ContactTypesEditForm'
 
 interface IProps {
     id: number
@@ -9,7 +10,9 @@ interface IProps {
 
 export const Contacts = (props: IProps) => {
     const [contacts, setContacts] = useState<IContact[]>([])
+    const [contactTypes, setContactTypes] = useState<IContactType[]>([])
     const [isAddContactFormVisible, setIsAddContactFormVisible] = useState<boolean>(false)
+    const [isContactTypesEditFormVisible, setIsContactTypesEditFormVisible] = useState<boolean>(false)
 
     const getContacts = async () => {
         try {
@@ -17,6 +20,24 @@ export const Contacts = (props: IProps) => {
             setContacts(newContacts)
         } catch (error) {
             alert('Error load contact')
+        }
+    }
+
+    const getContactTypes = async () => {
+        try {
+            const newContactTypes = await projectApi.getContactTypes()
+            setContactTypes(newContactTypes)
+        } catch (error) {
+            alert('Error load contact types')
+        }
+    }
+
+    const deleteHandler = async (id: number) => {
+        try {
+            await projectApi.deleteContact(id)
+            await getContacts()
+        } catch (error) {
+            alert('Error delete person')
         }
     }
 
@@ -32,8 +53,23 @@ export const Contacts = (props: IProps) => {
         }
     }
 
+    const onDeleteContactType = async (id: number) => {
+        try {
+            await projectApi.deleteContactType(id)
+            setContactTypes(contactTypes.filter(type => type.id !== id))
+        } catch (error) {
+            alert('Error delete contact type')
+        }
+    }
+
+    const editButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setIsContactTypesEditFormVisible(true)
+    }
+
     useEffect(() => {
         void getContacts()
+        void getContactTypes()
     }, [])
 
     return (
@@ -42,22 +78,39 @@ export const Contacts = (props: IProps) => {
                 <div className={s.contact}>Нет данных</div>
             ) : (
                 contacts.map(contact => (
-                    <>
-                        <div className={s.contact}>
-                            <p>{contact.name}</p>
-                            <p>{contact.value}</p>
-                            <div className={s.buttons}>
-                                <button className={s.button}>...</button>
-                            </div>
+                    <div key={contact.id} className={s.contact}>
+                        <p>{contact.name}</p>
+                        <p>{contact.value}</p>
+                        <div className={s.buttons}>
+                            <button className={s.button} onClick={() => deleteHandler(contact.id)}>
+                                x
+                            </button>
                         </div>
-                    </>
+                    </div>
                 ))
             )}
 
             {isAddContactFormVisible ? (
                 <form onSubmit={onSubmit} className={s.contact}>
                     <input hidden name={'personId'} value={props.id} />
-                    <input className={s.input} required placeholder="Type" name={'contacttypeId'} />
+                    <label>
+                        <span>Type: </span>
+                        <select name="contacttypeId">
+                            {contactTypes.map(ctype => (
+                                <option key={ctype.id} value={ctype.id}>
+                                    {ctype.name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <button
+                        className={s.button}
+                        onClick={e => {
+                            editButtonHandler(e)
+                            void getContactTypes()
+                        }}>
+                        Edit Types
+                    </button>
                     <input className={s.input} placeholder="Value" name={'value'} />
                     <button>Save</button>
                 </form>
@@ -65,6 +118,14 @@ export const Contacts = (props: IProps) => {
                 <button className={s.button} onClick={() => setIsAddContactFormVisible(true)}>
                     Add contact
                 </button>
+            )}
+            {isContactTypesEditFormVisible && (
+                <ContactTypesEditForm
+                    contactTypes={contactTypes}
+                    onDeleteType={id => onDeleteContactType(id)}
+                    onCloseForm={() => setIsContactTypesEditFormVisible(false)}
+                    setTypes={newTypes => setContactTypes(newTypes)}
+                />
             )}
         </div>
     )

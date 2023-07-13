@@ -12,6 +12,29 @@ export class ProjectApi {
         return await response.json()
     }
 
+    async deletePerson(id: number) {
+        await fetch(this.getUrl('/'), {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id
+            })
+        })
+    }
+
+    async createPerson(formData: FormData) {
+        const response = await fetch(this.getUrl('/'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formDataToObject(formData))
+        })
+        return await response.json()
+    }
+
     async getContactsById(id: number) {
         const response = await fetch(this.getUrl('/contacts'), {
             method: 'POST',
@@ -26,8 +49,8 @@ export class ProjectApi {
     }
 
     async createContact(formData: FormData) {
-        const response = await fetch(this.getUrl('/contacts'), {
-            method: 'PUT',
+        const response = await fetch(this.getUrl('/contact'), {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -36,8 +59,8 @@ export class ProjectApi {
         return await response.json()
     }
 
-    async deletePerson(id: number) {
-        const response = await fetch(this.getUrl('/'), {
+    async deleteContact(id: number) {
+        await fetch(this.getUrl('/contact'), {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -46,11 +69,27 @@ export class ProjectApi {
                 id
             })
         })
+    }
+
+    async getContactTypes() {
+        const response = await fetch(this.getUrl('/contactTypes'))
         return await response.json()
     }
 
-    async createPerson(formData: FormData) {
-        const response = await fetch(this.getUrl('/'), {
+    async deleteContactType(id: number) {
+        await fetch(this.getUrl('/contactType'), {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id
+            })
+        })
+    }
+
+    async createContactType(formData: FormData) {
+        const response = await fetch(this.getUrl('/contactType'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
